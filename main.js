@@ -1,5 +1,8 @@
-let API_KEY = 'e88b2b0a61f34f40b495de945e5045c2';
 let newsList = [];
+let menus = document.querySelectorAll(".nav-link")
+console.log("mmm", menus);
+menus.forEach(menu=>menu.addEventListener("click",(event)=>getNewsByCategory(event)))
+
 
 async function getNews() {
     let url = new URL('https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines');
@@ -7,12 +10,23 @@ async function getNews() {
     let data = await response.json();
     newsList = data.articles;
     render();
-    console.log("dddd", newsList);
+    console.log("ddddd", newsList);
+}
+
+let getNewsByCategory= async (event)=>{
+    let category = event.target.textContent.toLowerCase();
+    console.log("category", category);
+    let url = new URL('https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?category=${category}')
+    let response = await fetch(url);
+    let data = await response.json();
+    console.log("Ddd", data)
+    newsList = data.articles;
+    render();
 }
 
 let render = () => {
     let newsHTML = newsList.map(news => {
-        let image = news.urlToImage ? news.urlToImage : '/images/imgnotvailable.png';
+        let image = news.urlToImage ? news.urlToImage : "https://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpg";
         let description = news.description ? (news.description.length > 200 ? news.description.substring(0, 200) + "..." : news.description) : "내용없음";
         let date = moment(news.publishedAt).fromNow();
 
