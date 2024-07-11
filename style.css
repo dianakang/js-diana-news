@@ -1,13 +1,14 @@
-.head-line{
+.head-line {
     margin-top: 1em;
     display: flex;
     justify-content: center;
 }
+
 .head-line svg {
     width: 430px;
 }
 
-.menus{
+.menus {
     margin-top: 1em;
     display: flex;
     justify-content: center;
@@ -22,15 +23,19 @@
     margin: 5px;
 }
 
-.menus button:hover{
+.menus button:hover {
     background-color: palegreen;
 }
 
-.news-img-size{
+.news-img-size {
     max-width: 100%;
     max-height: 250px;
 }
 
-.news{
+.news {
     border-bottom: 1.5px solid black;
+}
+
+.navbar {
+    margin-bottom: 1em;
 }
