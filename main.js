@@ -4,43 +4,39 @@ console.log("mmm", menus);
 menus.forEach((menu) =>
   menu.addEventListener("click", (event) => getNewsByCategory(event))
 );
+let url = new URL(
+  `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines`
+);
 
-async function getNews() {
-  let url = new URL(
-    "https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines"
-  );
+let getNews = async () => {
   let response = await fetch(url);
   let data = await response.json();
   newsList = data.articles;
   render();
-  console.log("ddddd", newsList);
+};
+
+async function getLatestNews() {
+  url = new URL(
+    `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines`
+  );
+  getNews();
 }
 
 let getNewsByCategory = async (event, category) => {
-    if (event) event.preventDefault();
-    console.log("category", category);
-    let url = new URL(
-      `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?category=${category}`
-    );
-    let response = await fetch(url);
-    let data = await response.json();
-    console.log("Ddd", data);
-    newsList = data.articles;
-    render();
-  };
+  if (event) event.preventDefault();
+  url = new URL(
+    `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?category=${category}`
+  );
+  getNews();
+};
 
 let getNewsByKeyword = async (event) => {
   event.preventDefault();
   let keyword = document.getElementById("search-input").value;
-  console.log("keyword", keyword);
-  let url = new URL(
+  url = new URL(
     `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?q=${keyword}`
   );
-  let response = await fetch(url);
-  let data = await response.json();
-  console.log("keyword data", data);
-  newsList = data.articles;
-  render();
+  getNews();
 };
 
 document
@@ -53,7 +49,7 @@ let render = () => {
       let image = news.urlToImage
         ? news.urlToImage
         : "./images/imgnotavailable.png";
-        
+
       let description = news.description
         ? news.description.length > 200
           ? news.description.substring(0, 200) + "..."
