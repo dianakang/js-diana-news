@@ -36,13 +36,13 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item"><button class="nav-link" href="#">Business</button></li>
-              <li class="nav-item"><button class="nav-link" href="#">Entertainment</button></li>
-              <li class="nav-item"><button class="nav-link" href="#">General</button></li>
-              <li class="nav-item"><button class="nav-link" href="#">Health</button></li>
-              <li class="nav-item"><button class="nav-link" href="#">Science</button></li>
-              <li class="nav-item"><button class="nav-link" href="#">Sports</button></li>
-              <li class="nav-item"><button class="nav-link" href="#">Technology</button></li>
+              <li class="nav-item"><a class="nav-link" href="#" onclick="getNewsByCategory(event, 'business')">Business</a></li>
+              <li class="nav-item"><a class="nav-link" href="#" onclick="getNewsByCategory(event, 'entertainment')">Entertainment</a></li>
+              <li class="nav-item"><a class="nav-link" href="#" onclick="getNewsByCategory(event, 'general')">General</a></li>
+              <li class="nav-item"><a class="nav-link" href="#" onclick="getNewsByCategory(event, 'health')">Health</a></li>
+              <li class="nav-item"><a class="nav-link" href="#" onclick="getNewsByCategory(event, 'science')">Science</a></li>
+              <li class="nav-item"><a class="nav-link" href="#" onclick="getNewsByCategory(event, 'sports')">Sports</a></li>
+              <li class="nav-item"><a class="nav-link" href="#" onclick="getNewsByCategory(event, 'technology')">Technology</a></li>
             </ul>
             <form id="search-form" class="d-flex">
               <input id="search-input" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

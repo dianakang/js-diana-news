@@ -16,18 +16,18 @@ async function getNews() {
   console.log("ddddd", newsList);
 }
 
-let getNewsByCategory = async (event) => {
-  let category = event.target.textContent.toLowerCase();
-  console.log("category", category);
-  let url = new URL(
-    "https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?category=${category}"
-  );
-  let response = await fetch(url);
-  let data = await response.json();
-  console.log("Ddd", data);
-  newsList = data.articles;
-  render();
-};
+let getNewsByCategory = async (event, category) => {
+    if (event) event.preventDefault();
+    console.log("category", category);
+    let url = new URL(
+      `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?category=${category}`
+    );
+    let response = await fetch(url);
+    let data = await response.json();
+    console.log("Ddd", data);
+    newsList = data.articles;
+    render();
+  };
 
 let getNewsByKeyword = async (event) => {
   event.preventDefault();
