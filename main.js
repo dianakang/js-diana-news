@@ -7,33 +7,41 @@ menus.forEach((menu) =>
 let url = new URL(
   `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines`
 );
+let totalResult = 0;
+let page = 1;
+const pageSize = 10; // 고정값은 const로 선언
+const groupSize = 5;
 
 let getNews = async () => {
-    try{
-        let response = await fetch(url);
-        let data = await response.json();
-        if(response.status===200){
-            if (data.articles.length === 0) {
-                throw new Error("No result for this search");
-            }
-            newsList = data.articles;
-            render();
-        }else{
-            throw new Error(data.message);
-        }
+  try {
+    url.searchParams.set("page", page); // => &page=page
+    url.searchParams.set("pageSize", pageSize); // => &pageSize=pageSize
 
-    }catch(error){
-    errorRender(error.message)
+    let response = await fetch(url);
+
+    let data = await response.json();
+    if (response.status === 200) {
+      if (data.articles.length === 0) {
+        throw new Error("No result for this search");
+      }
+      newsList = data.articles;
+      totalResults = data.totalResults;
+      render();
+      paginationRender();
+    } else {
+      throw new Error(data.message);
     }
-
+  } catch (error) {
+    errorRender(error.message);
+  }
 };
 
 let getLatestNews = async () => {
-    url = new URL(
-        `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines`
-    );
-    await getNews();
-}
+  url = new URL(
+    `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines`
+  );
+  await getNews();
+};
 
 let getNewsByCategory = async (event, category) => {
   if (event) event.preventDefault();
@@ -89,11 +97,42 @@ let render = () => {
 };
 
 let errorRender = (errorMessage) => {
-    let errorHTML = `<div class="alert alert-danger" role="alert">
+  let errorHTML = `<div class="alert alert-danger" role="alert">
         ${errorMessage}
     </div>`;
 
-    document.getElementById("news-board").innerHTML = errorHTML;
+  document.getElementById("news-board").innerHTML = errorHTML;
 };
 
+let paginationRender = () => {
+  let totalPages = Math.ceil(totalResults / pageSize);
+  let pageGroup = Math.ceil(page / groupSize);
+  let lastPage = pageGroup * groupSize;
+
+  if (lastPage > totalPages) {
+    lastPage = totalPages;
+  }
+
+  let firstPage =
+    lastPage - (groupSize - 1) <= 0 ? 1 : lastPage - (groupSize - 1);
+  let paginationHTML = `<li class="page-item" onclick="moveToPage(${
+    page - 1
+  })"><a class="page-link">Previous</a></li>`;
+
+  for (let i = firstPage; i <= lastPage; i++) {
+    paginationHTML += `<li class="page-item ${
+      i === page ? "active" : ""
+    }" onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>`;
+  }
+  paginationHTML += `<li class="page-item" onclick="moveToPage(${
+    page + 1
+  })"><a class="page-link">Next</a></li>`;
+  document.querySelector(".pagination").innerHTML = paginationHTML;
+};
+
+let moveToPage = (pageNum) => {
+  console.log("movetopage", pageNum);
+  page = pageNum;
+  getNews();
+};
 getLatestNews();
