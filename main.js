@@ -9,17 +9,30 @@ let url = new URL(
 );
 
 let getNews = async () => {
-  let response = await fetch(url);
-  let data = await response.json();
-  newsList = data.articles;
-  render();
+    try{
+        let response = await fetch(url);
+        let data = await response.json();
+        if(response.status===200){
+            if (data.articles.length === 0) {
+                throw new Error("No result for this search");
+            }
+            newsList = data.articles;
+            render();
+        }else{
+            throw new Error(data.message);
+        }
+
+    }catch(error){
+    errorRender(error.message)
+    }
+
 };
 
-async function getLatestNews() {
-  url = new URL(
-    `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines`
-  );
-  getNews();
+let getLatestNews = async () => {
+    url = new URL(
+        `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines`
+    );
+    await getNews();
 }
 
 let getNewsByCategory = async (event, category) => {
@@ -27,7 +40,7 @@ let getNewsByCategory = async (event, category) => {
   url = new URL(
     `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?category=${category}`
   );
-  getNews();
+  await getNews();
 };
 
 let getNewsByKeyword = async (event) => {
@@ -36,7 +49,7 @@ let getNewsByKeyword = async (event) => {
   url = new URL(
     `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?q=${keyword}`
   );
-  getNews();
+  await getNews();
 };
 
 document
@@ -75,4 +88,12 @@ let render = () => {
   document.getElementById("news-board").innerHTML = newsHTML;
 };
 
-getNews();
+let errorRender = (errorMessage) => {
+    let errorHTML = `<div class="alert alert-danger" role="alert">
+        ${errorMessage}
+    </div>`;
+
+    document.getElementById("news-board").innerHTML = errorHTML;
+};
+
+getLatestNews();
