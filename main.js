@@ -24,6 +24,21 @@ let getNewsByCategory= async (event)=>{
     render();
 }
 
+let getNewsByKeyword = async (event) => {
+    event.preventDefault();
+    let keyword = document.getElementById('search-input').value;
+    console.log("keyword", keyword);
+    let url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?q=${keyword}`);
+    let response = await fetch(url);
+    let data = await response.json();
+    console.log("keyword data", data);
+    newsList = data.articles;
+    render();
+};
+
+document.getElementById('search-form').addEventListener('submit', getNewsByKeyword);
+
+
 let render = () => {
     let newsHTML = newsList.map(news => {
         let image = news.urlToImage ? news.urlToImage : "https://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpghttps://raw.githubusercontent.com/charleskim77/NooNa_JavaScript/main/TimesNews-step2/img/Noimage.jpg";
